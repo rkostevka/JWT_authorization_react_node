@@ -3,3 +3,4 @@ client/node_modules
 server/node_modules
 server/.gitignore
 server/.env
+server/scratch/refreshToken

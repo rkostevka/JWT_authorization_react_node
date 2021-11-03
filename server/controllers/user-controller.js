@@ -54,6 +54,10 @@ class UserController {
 
 	async refresh(req, res, next) {
 		try {
+			const refreshToken = localStorage.getItem("refreshToken");
+			const userData = await userService.refresh(refreshToken);
+			localStorage.setItem("refreshToken", userData.refreshToken);
+			return res.json(userData);
 		} catch (e) {
 			next(e);
 		}
@@ -61,6 +65,7 @@ class UserController {
 
 	async getUsers(req, res, next) {
 		try {
+		
 			res.json(['123', '456']);
 		} catch (e) {
 			next(e);
