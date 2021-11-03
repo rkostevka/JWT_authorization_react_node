@@ -1,6 +1,8 @@
 const userService = require('../service/user-service');
 const {validationResult} = require('express-validator');
 const ApiError = require('../exeptions/api-error');
+const LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./scratch');
 
 class UserController {
 	async registration(req, res, next) {
@@ -11,7 +13,7 @@ class UserController {
 			};
 			const {email, password} = req.body;
 			const userData = await userService.registration(email, password);
-			res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+			localStorage.setItem("refreshToken", userData.refreshToken);
 			return res.json(userData);
 		} catch(e) {
 			next(e);
@@ -22,7 +24,8 @@ class UserController {
 		try {
 			const {email, password} = req.body;
 			const userData = await userService.login(email, password);
-			res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+			localStorage.setItem("refreshToken", userData.refreshToken);
+			return res.json(userData);
 		} catch (e) {
 			next(e);
 		}
@@ -30,6 +33,10 @@ class UserController {
 
 	async logout(req, res, next) {
 		try {
+			const refreshToken = localStorage.getItem("refreshToken");
+			const token = userService.logout(refreshToken);
+			localStorage.clear();
+			return res.json(token);
 		} catch (e) {
 			next(e);
 		}

@@ -34,7 +34,6 @@ class UserService {
 
 	async activate(activationLink) {
 		const user = await userModel.findOne({ activationLink });
-		console.log(user);
 		if (!user) {
 			throw ApiError.BadRequest(("Incorrect activation link"))
 		}
@@ -59,6 +58,11 @@ class UserService {
 			...tokens,
 			user: userDto,
 		};
+	}
+
+	async logout(refreshToken) {
+		const token = await tokenService.removeToken(refreshToken);
+		return token;
 	}
 }
 
