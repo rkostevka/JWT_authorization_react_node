@@ -90,6 +90,10 @@ class UserService {
 			user: userDto,
 		};
 	}
+
+	async getAllUsers() {
+		return await userModel.find();
+	}
 }
 
 module.exports = new UserService();
