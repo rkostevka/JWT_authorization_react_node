@@ -1,9 +1,10 @@
 import React, {FC} from 'react';
+import LoginForm  from './components/LoginForm';
 
 const App: FC = () => {
   return (
     <div className="App">
-      123
+      <LoginForm/>
     </div>
   );
 }
