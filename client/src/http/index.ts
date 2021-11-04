@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AuthResponse } from '../../models/response/AuthResponse';
 export const API_URL = `http://localhost:5000/api`;
 
 
@@ -13,6 +14,23 @@ $api.interceptors.request.use(config => {
 		console.log("interceptors" + config.headers!.authorization);
 	}
 	return config;
+});
+
+$api.interceptors.response.use((config) => {
+	return config;
+}, async (error) => {
+	const oringinalRequest = error.config;
+	if(error.response.status == 401 && error.config && !oringinalRequest._isRetry) {
+		oringinalRequest._isRetry = true;
+		try {
+			const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {withCredentials: true});
+			localStorage.setItem('refreshToken', response.data.accessToken);
+			return $api.request(oringinalRequest);
+		} catch(e) {
+			console.log('Not authorized')
+		}
+	}
+	throw error;
 });
 
 export default $api;
