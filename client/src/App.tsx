@@ -37,10 +37,10 @@ const App: FC = () => {
 
   return (
     <div className="App">
-      <h1>{store.isAuth ? `User is authorized from: ${store.user.email}` : 'Authorization'}</h1>
-      <h1>{store.user.isActivated ? `Account is confirmed from: ${store.user.email}` : 'You need to confirm your email!'}</h1>
-      <button onClick={() => {store.logout()}}>Logout</button>
-      <button onClick={getUsers}>Get All Users</button>
+      <div className="about">{store.isAuth ? `User is authorized from: ${store.user.email}` : 'Authorization'}</div>
+      <div className="about">{store.user.isActivated ? `Account is confirmed from: ${store.user.email}` : 'You need to confirm your email!'}</div>
+      <button className="button" onClick={() => {store.logout()}}>Logout</button>
+      <button className="button" onClick={getUsers}>Get All Users</button>
       <div>
         {users.map(user => 
           <div key={user.email}>{user.email}</div>

@@ -2,6 +2,7 @@ import React, { createContext } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import Store from './store/store';
+import './styles/Style.css'
 
 interface State {
   store: Store;
@@ -14,7 +15,11 @@ export const Context = createContext<State>({
 
 ReactDOM.render(
   <Context.Provider value={{store}}>
-    <App />
+    <div className="wrapper">
+      <div className="_container">
+        <App />
+      </div>
+    </div>
   </Context.Provider>,
     
   document.getElementById('root')
